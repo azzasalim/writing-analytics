@@ -117,3 +117,39 @@ if rows:
         st.json(json.loads(rj))
 else:
     st.info("لا توجد بيانات محفوظة بعد.")
+st.divider()
+st.subheader("Student Growth Analysis")
+
+student_lookup = st.text_input("Enter Student ID to analyze growth")
+
+if student_lookup:
+    rows = cur.execute(
+        "SELECT attempt_no, result_json FROM attempts WHERE student_id=? ORDER BY attempt_no ASC",
+        (student_lookup,)
+    ).fetchall()
+
+    if len(rows) >= 2:
+        scores = []
+        for attempt_no, rj in rows:
+            data = json.loads(rj)
+            total_score = sum(data["rubric_scores"].values())
+            scores.append((attempt_no, total_score))
+
+        first_score = scores[0][1]
+        last_score = scores[-1][1]
+        improvement = last_score - first_score
+        improvement_percent = round((improvement / max(1, first_score)) * 100, 2)
+
+        if improvement_percent < 10:
+            speed = "Slow"
+        elif improvement_percent < 25:
+            speed = "Moderate"
+        else:
+            speed = "Fast"
+
+        st.write("First Score:", first_score)
+        st.write("Last Score:", last_score)
+        st.write("Improvement %:", improvement_percent)
+        st.write("Learning Speed:", speed)
+    else:
+        st.info("Need at least 2 attempts for growth analysis.")
