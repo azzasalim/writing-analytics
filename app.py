@@ -179,3 +179,43 @@ if all_rows:
     st.write("Average Error Density:", avg_error_density)
 else:
     st.info("No data yet.")
+import matplotlib.pyplot as plt
+
+st.divider()
+st.subheader("Student Progress Chart (Attempts vs Total Score)")
+
+student_chart_id = st.text_input("Student ID for chart (رمز الطالب للرسم البياني)")
+
+if student_chart_id:
+    rows = cur.execute(
+        "SELECT attempt_no, result_json FROM attempts WHERE student_id=? ORDER BY attempt_no ASC",
+        (student_chart_id.strip(),)
+    ).fetchall()
+
+    if len(rows) >= 2:
+        attempts = []
+        total_scores = []
+        error_densities = []
+
+        for attempt_no, rj in rows:
+            data = json.loads(rj)
+            total_score = sum(data["rubric_scores"].values())
+            attempts.append(attempt_no)
+            total_scores.append(total_score)
+            error_densities.append(data.get("error_density", 0.0))
+
+        fig = plt.figure()
+        plt.plot(attempts, total_scores, marker="o")
+        plt.xlabel("Attempt No")
+        plt.ylabel("Total Rubric Score (0–20)")
+        plt.title(f"Progress for {student_chart_id}")
+        st.pyplot(fig)
+
+        fig2 = plt.figure()
+        plt.plot(attempts, error_densities, marker="o")
+        plt.xlabel("Attempt No")
+        plt.ylabel("Error Density")
+        plt.title(f"Error Density Trend for {student_chart_id}")
+        st.pyplot(fig2)
+    else:
+        st.info("احتاج محاولتين على الأقل لعرض المنحنى.")
