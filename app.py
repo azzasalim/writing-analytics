@@ -401,31 +401,7 @@ if gain_student_id:
         st.write("Gain Level:", level)
     else:
         st.info("Need at least 2 attempts to calculate Gain.")
-st.divider()
-st.subheader("Admin Dashboard")
 
-all_rows = cur.execute("SELECT result_json FROM attempts").fetchall()
-
-if all_rows:
-    total_attempts = len(all_rows)
-    total_students = cur.execute("SELECT COUNT(DISTINCT student_id) FROM attempts").fetchone()[0]
-
-    total_scores = []
-    total_error_density = []
-
-    for (rj,) in all_rows:
-        data = json.loads(rj)
-        total_scores.append(sum(data["rubric_scores"].values()))
-        total_error_density.append(data["error_density"])
-
-    avg_score = round(sum(total_scores) / len(total_scores), 2)
-    avg_error_density = round(sum(total_error_density) / len(total_error_density), 3)
-
-    st.write("Total Students:", total_students)
-    st.write("Total Attempts:", total_attempts)
-    st.write("Average Total Score:", avg_score)
-    st.write("Average Error Density:", avg_error_density)
- 
 import matplotlib.pyplot as plt
 import numpy as np
 
