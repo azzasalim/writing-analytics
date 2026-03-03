@@ -56,6 +56,10 @@ if st.sidebar.button("Logout"):
     st.session_state.role = None
     st.session_state.student_id = None
     st.sidebar.success("Logged out")
+    # ---------- Block access if not logged in ----------
+if st.session_state.role is None:
+    st.info("Please login from the sidebar.")
+    st.stop()
 # ---------- OpenAI ----------
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
