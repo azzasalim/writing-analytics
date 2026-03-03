@@ -216,7 +216,43 @@ if st.session_state.role == "admin":
         st.info("لا توجد بيانات محفوظة بعد.")
 st.divider()
 st.subheader("Student Growth Analysis")
+if st.session_state.role == "student":
+    st.divider()
+    st.subheader("My Progress")
 
+    sid = st.session_state.student_id
+
+    my_rows = cur.execute(
+        "SELECT attempt_no, result_json FROM attempts WHERE student_id=? ORDER BY attempt_no ASC",
+        (sid,)
+    ).fetchall()
+
+    if my_rows:
+        scores = []
+        attempts = []
+
+        for att, rj in my_rows:
+            data = json.loads(rj)
+            total_score = sum(data["rubric_scores"].values())
+            attempts.append(att)
+            scores.append(total_score)
+
+        st.line_chart({"Total Score": scores})
+
+        first_score = scores[0]
+        last_score = scores[-1]
+        max_score = 20
+
+        if max_score - first_score != 0:
+            g = round((last_score - first_score) / (max_score - first_score), 3)
+        else:
+            g = 0
+
+        st.write("First Score:", first_score)
+        st.write("Last Score:", last_score)
+        st.write("Normalized Gain:", g)
+    else:
+        st.info("No attempts yet.")
 student_lookup = st.text_input("Enter Student ID to analyze growth")
 
 if student_lookup:
