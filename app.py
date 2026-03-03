@@ -417,7 +417,7 @@ if all_rows:
     st.write("Total Attempts:", total_attempts)
     st.write("Average Total Score:", avg_score)
     st.write("Average Error Density:", avg_error_density)
-    else:
+else:
         st.info("No data yet.")
     st.divider()
 
