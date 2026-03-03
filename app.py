@@ -5,6 +5,34 @@ from openai import OpenAI
 import hashlib
 st.set_page_config(page_title="Writing Performance Analyzer", layout="centered")
 st.title("AI Writing Performance Analyzer (Students)")
+# ----------- Local DB (SQLite) -----------
+conn = sqlite3.connect("writing_data.db", check_same_thread=False)
+cur = conn.cursor()
+
+cur.execute("""
+CREATE TABLE IF NOT EXISTS attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  student_id TEXT NOT NULL,
+  attempt_no INTEGER NOT NULL,
+  task_prompt TEXT,
+  culture_anchor TEXT,
+  student_text TEXT,
+  result_json TEXT
+)
+""")
+conn.commit()
+
+cur.execute("""
+CREATE TABLE IF NOT EXISTS students (
+  student_id TEXT PRIMARY KEY,
+  pin_hash TEXT NOT NULL
+)
+""")
+conn.commit()
+
+def hash_pin(pin: str) -> str:
+    return hashlib.sha256(pin.encode("utf-8")).hexdigest()
 # ---------- Simple Auth (Student/Admin) ----------
 if "role" not in st.session_state:
     st.session_state.role = None
