@@ -119,7 +119,7 @@ Return JSON exactly:
  "error_type_ranking":[{"type":"","count":0}],
  "rubric_scores":{"accuracy":0,"lexis":0,"coherence":0,"task_achievement":0,"style_voice":0},
  "top_3_fixes":["","",""],
- "next_task":{"prompt":"","culture_anchor":"Saudi context"}
+ "next_task":{"prompt":""}
 }
 """
 
