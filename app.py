@@ -484,4 +484,4 @@ if gains:
     else:
         st.write("Mean Gain:", round(mean_gain, 3))
     else:
-    st.info("Not enough data for histogram.")
+        st.info("Not enough data for histogram.")
