@@ -2,7 +2,7 @@ import json
 import sqlite3
 import streamlit as st
 from openai import OpenAI
-
+import hashlib
 st.set_page_config(page_title="Writing Performance Analyzer", layout="centered")
 st.title("AI Writing Performance Analyzer (Students)")
 
