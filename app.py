@@ -323,3 +323,25 @@ if gains:
     st.write("Low Gain Students:", low)
 else:
     st.info("Not enough multi-attempt students for group gain analysis.")
+import matplotlib.pyplot as plt
+import numpy as np
+
+st.divider()
+st.subheader("Distribution of Normalized Gain (Group Histogram)")
+
+if gains:
+    gains_array = np.array(gains)
+    mean_gain = np.mean(gains_array)
+
+    fig = plt.figure()
+    plt.hist(gains_array, bins=6, edgecolor="black")
+    plt.axvline(mean_gain)
+    plt.xlabel("Normalized Gain (g)")
+    plt.ylabel("Number of Students")
+    plt.title("Histogram of Learning Gain Distribution")
+
+    st.pyplot(fig)
+
+    st.write("Group Mean Gain:", round(mean_gain, 3))
+else:
+    st.info("Not enough data for histogram.")
