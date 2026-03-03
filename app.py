@@ -5,7 +5,57 @@ from openai import OpenAI
 import hashlib
 st.set_page_config(page_title="Writing Performance Analyzer", layout="centered")
 st.title("AI Writing Performance Analyzer (Students)")
+# ---------- Simple Auth (Student/Admin) ----------
+if "role" not in st.session_state:
+    st.session_state.role = None
+if "student_id" not in st.session_state:
+    st.session_state.student_id = None
 
+st.sidebar.title("Login")
+
+who = st.sidebar.radio("Role", ["Student", "Admin"])
+
+if who == "Admin":
+    admin_pw = st.sidebar.text_input("Admin password", type="password")
+    if st.sidebar.button("Login (Admin)"):
+        if admin_pw == st.secrets.get("ADMIN_PASSWORD", ""):
+            st.session_state.role = "admin"
+            st.session_state.student_id = None
+            st.sidebar.success("Admin logged in ✅")
+        else:
+            st.sidebar.error("Wrong password")
+
+if who == "Student":
+    sid = st.sidebar.text_input("Student ID", placeholder="e.g., E01")
+    pin = st.sidebar.text_input("PIN", type="password")
+
+    if st.sidebar.button("Login (Student)"):
+        if not sid.strip() or not pin.strip():
+            st.sidebar.error("Enter Student ID and PIN")
+        else:
+            sid = sid.strip()
+            row = cur.execute("SELECT pin_hash FROM students WHERE student_id=?", (sid,)).fetchone()
+
+            if row is None:
+                # First-time registration
+                cur.execute("INSERT INTO students (student_id, pin_hash) VALUES (?,?)", (sid, hash_pin(pin)))
+                conn.commit()
+                st.session_state.role = "student"
+                st.session_state.student_id = sid
+                st.sidebar.success("Registered & logged in ✅")
+            else:
+                if row[0] == hash_pin(pin):
+                    st.session_state.role = "student"
+                    st.session_state.student_id = sid
+                    st.sidebar.success("Logged in ✅")
+                else:
+                    st.sidebar.error("Wrong PIN")
+
+st.sidebar.divider()
+if st.sidebar.button("Logout"):
+    st.session_state.role = None
+    st.session_state.student_id = None
+    st.sidebar.success("Logged out")
 # ---------- OpenAI ----------
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
