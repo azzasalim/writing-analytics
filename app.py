@@ -423,7 +423,29 @@ import numpy as np
 
 st.divider()
 st.subheader("Distribution of Normalized Gain (Group Histogram)")
+# --- Build gains list for group histogram ---
+students = cur.execute("SELECT DISTINCT student_id FROM attempts").fetchall()
+gains = []
 
+for (sid,) in students:
+    rows = cur.execute(
+        "SELECT attempt_no, result_json FROM attempts WHERE student_id=? ORDER BY attempt_no ASC",
+        (sid,)
+    ).fetchall()
+
+    if len(rows) >= 2:
+        scores = []
+        for attempt_no, rj in rows:
+            data = json.loads(rj)
+            scores.append(sum(data["rubric_scores"].values()))
+
+        first_score = scores[0]
+        last_score = scores[-1]
+        max_score = 20
+
+        if max_score - first_score != 0:
+            g = (last_score - first_score) / (max_score - first_score)
+            gains.append(g)
 if gains:
     gains_array = np.array(gains)
     mean_gain = np.mean(gains_array)
