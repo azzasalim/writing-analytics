@@ -417,16 +417,17 @@ if all_rows:
     st.write("Total Attempts:", total_attempts)
     st.write("Average Total Score:", avg_score)
     st.write("Average Error Density:", avg_error_density)
-else:
-    st.info("No data yet.")
-st.divider()
-st.subheader("Group Normalized Gain Analysis")
+    else:
+        st.info("No data yet.")
+    st.divider()
 
-students = cur.execute("SELECT DISTINCT student_id FROM attempts").fetchall()
-gains = []
+    st.subheader("Group Normalized Gain Analysis")
 
-for (sid,) in students:
-    rows = cur.execute(
+    students = cur.execute("SELECT DISTINCT student_id FROM attempts").fetchall()
+    gains = []
+
+    for (sid,) in students:
+        rows = cur.execute(
         "SELECT attempt_no, result_json FROM attempts WHERE student_id=? ORDER BY attempt_no ASC",
         (sid,)
     ).fetchall()
