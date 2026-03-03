@@ -437,7 +437,7 @@ if gains:
 
     st.pyplot(fig)
 
-    st.write("Group Me    else:
+    st.subheader("Group Normalized Gain Analysis")
         st.info("No data yet.")
 
     st.divider()
