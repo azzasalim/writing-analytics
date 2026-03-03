@@ -124,11 +124,11 @@ def hash_pin(pin: str) -> str:
     return hashlib.sha256(pin.encode("utf-8")).hexdigest()
 # ---------- UI ----------
 with st.form("form"):
-if st.session_state.role == "student":
-    student_id = st.session_state.student_id
-    st.caption(f"Logged in as: {student_id}")
-else:
-    student_id = st.text_input("Student ID (رمز الطالب) *")
+    if st.session_state.role == "student":
+        student_id = st.session_state.student_id
+        st.caption(f"Logged in as: {student_id}")
+    else:
+        student_id = st.text_input("Student ID (رمز الطالب) *")
     attempt_no = st.number_input("Attempt No (رقم المحاولة)", min_value=1, step=1, value=1)
     task_prompt = st.text_area("Task prompt (سؤال الكتابة)")
     culture_anchor = st.text_input("Saudi culture anchor (مرتكز ثقافي سعودي)")
