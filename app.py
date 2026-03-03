@@ -174,17 +174,18 @@ Return ONLY JSON.
     st.json(result)
 
 st.divider()
-st.subheader("Research view (latest saved attempts)")
-rows = cur.execute(
-    "SELECT created_at, student_id, attempt_no, result_json FROM attempts ORDER BY id DESC LIMIT 10"
-).fetchall()
+if st.session_state.role == "admin":
+    st.subheader("Research view (latest saved attempts)")
+    rows = cur.execute(
+        "SELECT created_at, student_id, attempt_no, result_json FROM attempts ORDER BY id DESC LIMIT 10"
+    ).fetchall()
 
-if rows:
-    for created_at, sid, att, rj in rows:
-        st.caption(f"{created_at} | {sid} | Attempt {att}")
-        st.json(json.loads(rj))
-else:
-    st.info("لا توجد بيانات محفوظة بعد.")
+    if rows:
+        for created_at, sid, att, rj in rows:
+            st.caption(f"{created_at} | {sid} | Attempt {att}")
+            st.json(json.loads(rj))
+    else:
+        st.info("لا توجد بيانات محفوظة بعد.")
 st.divider()
 st.subheader("Student Growth Analysis")
 
