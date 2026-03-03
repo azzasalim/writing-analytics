@@ -482,5 +482,4 @@ if gains:
         st.write("Low Gain Students:", low)
 
     else:
-        st.write("Mean Gain:", round(mean_gain, 3))
-        st.info("Not enough data for histogram.")
+        st.info("Not enough multi-attempt students for group gain analysis.")
