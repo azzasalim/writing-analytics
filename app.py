@@ -57,7 +57,17 @@ CREATE TABLE IF NOT EXISTS attempts (
 )
 """)
 conn.commit()
+# ---------- Students table (for PIN login) ----------
+cur.execute("""
+CREATE TABLE IF NOT EXISTS students (
+  student_id TEXT PRIMARY KEY,
+  pin_hash TEXT NOT NULL
+)
+""")
+conn.commit()
 
+def hash_pin(pin: str) -> str:
+    return hashlib.sha256(pin.encode("utf-8")).hexdigest()
 # ---------- UI ----------
 with st.form("form"):
     student_id = st.text_input("Student ID (رمز الطالب) *")
