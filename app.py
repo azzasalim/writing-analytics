@@ -311,7 +311,9 @@ if st.session_state.role == "admin":
 
         for (rj,) in all_rows:
             data = json.loads(rj)
-           rubric = data.get("rubric_scores", {})
+      rubric = data.get("rubric_scores", {})
+      if isinstance(rubric, dict) and rubric:
+          scores.append(sum(rubric.values()))
            if isinstance(rubric, dict) and rubric:
             total_scores.append(sum(rubric.values()))
             total_error_density.append(data["error_density"])
