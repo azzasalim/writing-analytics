@@ -219,3 +219,43 @@ if student_chart_id:
         st.pyplot(fig2)
     else:
         st.info("احتاج محاولتين على الأقل لعرض المنحنى.")
+st.divider()
+st.subheader("Normalized Gain (Learning Effectiveness)")
+
+gain_student_id = st.text_input("Student ID for Gain Calculation")
+
+if gain_student_id:
+    rows = cur.execute(
+        "SELECT attempt_no, result_json FROM attempts WHERE student_id=? ORDER BY attempt_no ASC",
+        (gain_student_id.strip(),)
+    ).fetchall()
+
+    if len(rows) >= 2:
+        scores = []
+        for attempt_no, rj in rows:
+            data = json.loads(rj)
+            total_score = sum(data["rubric_scores"].values())
+            scores.append(total_score)
+
+        first_score = scores[0]
+        last_score = scores[-1]
+        max_score = 20
+
+        if max_score - first_score != 0:
+            g = round((last_score - first_score) / (max_score - first_score), 3)
+        else:
+            g = 0
+
+        if g < 0.3:
+            level = "Low Gain"
+        elif g < 0.7:
+            level = "Moderate Gain"
+        else:
+            level = "High Gain"
+
+        st.write("First Score:", first_score)
+        st.write("Last Score:", last_score)
+        st.write("Normalized Gain (g):", g)
+        st.write("Gain Level:", level)
+    else:
+        st.info("Need at least 2 attempts to calculate Gain.")
