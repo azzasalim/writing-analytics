@@ -169,7 +169,6 @@ if submitted:
 
     prompt = f"""
 Task prompt: {task_prompt}
-Culture anchor: {culture_anchor}
 
 Student text:
 {student_text}
@@ -193,7 +192,7 @@ Return ONLY JSON.
 
     cur.execute(
         "INSERT INTO attempts (student_id, attempt_no, task_prompt, culture_anchor, student_text, result_json) VALUES (?,?,?,?,?,?)",
-        (student_id.strip(), int(attempt_no), task_prompt, culture_anchor, student_text, json.dumps(result)),
+        (student_id.strip(), int(attempt_no), task_prompt, "", student_text, json.dumps(result)),
     )
     conn.commit()
 
