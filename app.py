@@ -128,7 +128,6 @@ Hints must be short.
 Options must be single words or short phrases.
 Never provide the full corrected sentence.
 """
-"""
 
 # ---------- Local DB (SQLite) ----------
 conn = sqlite3.connect("writing_data.db", check_same_thread=False)
