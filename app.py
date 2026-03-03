@@ -417,47 +417,7 @@ if all_rows:
     st.write("Total Attempts:", total_attempts)
     st.write("Average Total Score:", avg_score)
     st.write("Average Error Density:", avg_error_density)
-else:
-        st.info("No data yet.")
-    st.divider()
-
-    st.subheader("Group Normalized Gain Analysis")
-
-    students = cur.execute("SELECT DISTINCT student_id FROM attempts").fetchall()
-    gains = []
-
-    for (sid,) in students:
-        rows = cur.execute(
-        "SELECT attempt_no, result_json FROM attempts WHERE student_id=? ORDER BY attempt_no ASC",
-        (sid,)
-    ).fetchall()
-
-    if len(rows) >= 2:
-        scores = []
-        for attempt_no, rj in rows:
-            data = json.loads(rj)
-            scores.append(sum(data["rubric_scores"].values()))
-
-        first_score = scores[0]
-        last_score = scores[-1]
-        max_score = 20
-
-        if (max_score - first_score) != 0:
-            g = (last_score - first_score) / (max_score - first_score)
-            gains.append(g)
-
-if gains:
-    avg_gain = round(sum(gains) / len(gains), 3)
-    high = len([g for g in gains if g >= 0.7])
-    moderate = len([g for g in gains if 0.3 <= g < 0.7])
-    low = len([g for g in gains if g < 0.3])
-
-    st.write("Average Normalized Gain (g):", avg_gain)
-    st.write("High Gain Students:", high)
-    st.write("Moderate Gain Students:", moderate)
-    st.write("Low Gain Students:", low)
-else:
-    st.info("Not enough multi-attempt students for group gain analysis.")
+ 
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -477,6 +437,51 @@ if gains:
 
     st.pyplot(fig)
 
-    st.write("Group Mean Gain:", round(mean_gain, 3))
+    st.write("Group Me    else:
+        st.info("No data yet.")
+
+    st.divider()
+    st.subheader("Group Normalized Gain Analysis")
+
+    students = cur.execute(
+        "SELECT DISTINCT student_id FROM attempts"
+    ).fetchall()
+
+    gains = []
+
+    for (sid,) in students:
+        rows = cur.execute(
+            "SELECT attempt_no, result_json FROM attempts WHERE student_id=? ORDER BY attempt_no ASC",
+            (sid,)
+        ).fetchall()
+
+        if len(rows) >= 2:
+            scores = []
+
+            for attempt_no, rj in rows:
+                data = json.loads(rj)
+                scores.append(sum(data["rubric_scores"].values()))
+
+            first_score = scores[0]
+            last_score = scores[-1]
+            max_score = 20
+
+            if max_score - first_score != 0:
+                g = (last_score - first_score) / (max_score - first_score)
+                gains.append(g)
+
+    if gains:
+        avg_gain = round(sum(gains) / len(gains), 3)
+        high = len([g for g in gains if g >= 0.7])
+        moderate = len([g for g in gains if 0.3 <= g < 0.7])
+        low = len([g for g in gains if g < 0.3])
+
+        st.write("Average Normalized Gain (g):", avg_gain)
+        st.write("High Gain Students:", high)
+        st.write("Moderate Gain Students:", moderate)
+        st.write("Low Gain Students:", low)
+
+    else:
+        st.info("Not enough multi-attempt students for group gain analysis.")an Gain:", round(mean_gain, 3))
 else:
     st.info("Not enough data for histogram.")
