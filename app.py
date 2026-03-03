@@ -159,7 +159,6 @@ with st.form("form"):
         student_id = st.text_input("Student ID (رمز الطالب) *")
     attempt_no = st.number_input("Attempt No (رقم المحاولة)", min_value=1, step=1, value=1)
     task_prompt = st.text_area("Task prompt (سؤال الكتابة)")
-    culture_anchor = st.text_input("Saudi culture anchor (مرتكز ثقافي سعودي)")
     student_text = st.text_area("Student writing (نص الطالب) *", height=220)
     submitted = st.form_submit_button("Analyze & Save")
 
