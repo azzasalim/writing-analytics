@@ -238,7 +238,7 @@ if st.session_state.role == "student":
         for att, rj in my_rows:
             data = json.loads(rj)
 total_score = sum(data.get("rubric_scores", {}).values())
-          attempts.append(att)
+            attempts.append(att)
             scores.append(total_score)
 
         st.line_chart({"Total Score": scores})
