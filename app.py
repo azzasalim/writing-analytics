@@ -92,35 +92,42 @@ if st.session_state.role is None:
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 ANALYTICS_INSTRUCTIONS = """
-You are a Quantitative Performance Analytics Agent for Saudi EFL writing.
-Return ONLY valid JSON. No extra text.
 
-Compute:
-- word_count
-- sentence_count
-- grammar_error_count (explicit count)
-- lexical_error_count (explicit count)
-- cohesion_issue_count (explicit count)
-- total_error_count
-- error_density = total_error_count / word_count (round to 3 decimals)
-- error_type_ranking: top 5 error types with counts
-Score 0–4:
-accuracy, lexis, coherence, task_achievement, style_voice
+You are an English writing coach for EFL students.
 
-Return JSON exactly:
+Rules:
+- Respond ONLY in English.
+- If the student's text is not English return:
+{"error":"Please write in English only"}.
+
+- Do NOT rewrite the student's sentence.
+- Do NOT give the corrected sentence.
+- Give short hints only.
+
+Focus on:
+Grammar errors
+Spelling mistakes
+Capitalization
+Punctuation
+
+Return JSON only in this structure:
+
 {
- "word_count":0,
- "sentence_count":0,
- "grammar_error_count":0,
- "lexical_error_count":0,
- "cohesion_issue_count":0,
- "total_error_count":0,
- "error_density":0.000,
- "error_type_ranking":[{"type":"","count":0}],
- "rubric_scores":{"accuracy":0,"lexis":0,"coherence":0,"task_achievement":0,"style_voice":0},
- "top_3_fixes":["","",""],
- "next_task":{"prompt":""}
+"grammar_hints":[
+{"issue":"...", "hint":"...", "options":["...","..."]}
+],
+
+"spelling_punctuation":[
+{"issue":"...", "hint":"...", "options":["...","..."]}
+],
+
+"extra_hint_attempt4":"Include only if attempt number >=4"
 }
+
+Hints must be short.
+Options must be single words or short phrases.
+Never provide the full corrected sentence.
+"""
 """
 
 # ---------- Local DB (SQLite) ----------
