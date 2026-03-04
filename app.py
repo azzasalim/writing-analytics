@@ -37,7 +37,7 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
                     options,
                     key=f"opt_{i}"
                 )
-return
+        return
     showed_any = False
 
     if grammar:
