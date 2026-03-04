@@ -484,7 +484,7 @@ if gains:
                     scores.append(sum(rubric.values()))
                 else:
                     # إذا كانت محاولة قديمة بدون rubric_scores نتجاهلها
-                    continue          data = json.loads(rj)
+                    continue          
 
             first_score = scores[0]
             last_score = scores[-1]
