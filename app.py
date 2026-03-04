@@ -47,7 +47,7 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
     ("vocab_hints", "Word choice"),
 ]:
         for h in (result.get(cat) or []):
-        issues.append((title, h))
+            issues.append((title, h))
 
 if not issues:
     with st.chat_message("assistant"):
