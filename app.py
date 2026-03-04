@@ -429,8 +429,9 @@ for (sid,) in students:
         scores = []
         for attempt_no, rj in rows:
             data = json.loads(rj)
-            scores.append(sum(data["rubric_scores"].values()))
-
+rubric = data.get("rubric_scores", {})
+if isinstance(rubric, dict) and rubric:
+    scores.append(sum(rubric.values()))
         first_score = scores[0]
         last_score = scores[-1]
         max_score = 20
