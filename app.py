@@ -54,11 +54,11 @@ if not issues:
         st.success("🌟 Great! I didn’t find major issues. Try writing 1–2 longer sentences for deeper feedback.")
     return
 
-for i, (title, h) in enumerate(issues, start=1):
-    issue = (h.get("issue") or "Issue").strip()
-    hint = (h.get("hint") or "").strip()
-    suggestion = (h.get("suggestion") or "").strip()
-    error_text = (h.get("error_text") or "").strip()
+    for i, (title, h) in enumerate(issues, start=1):
+        issue = (h.get("issue") or "Issue").strip()
+        hint = (h.get("hint") or "").strip()
+        suggestion = (h.get("suggestion") or "").strip()
+        error_text = (h.get("error_text") or "").strip()
 
     with st.chat_message("assistant"):
         st.markdown(f"**{i}) {title}: {issue}**")
