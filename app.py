@@ -230,6 +230,8 @@ with st.form("form"):
     attempt_no = st.number_input("Attempt No (رقم المحاولة)", min_value=1, step=1, value=1)
     task_prompt = st.text_area("Task prompt (سؤال الكتابة)")
     student_text = st.text_area("Student writing (نص الطالب) *", height=220)
+    st.session_state["student_text"] = student_text
+
     submitted = st.form_submit_button("Analyze & Save")
 
 if submitted:
