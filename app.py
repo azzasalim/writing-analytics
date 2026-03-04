@@ -3,6 +3,71 @@ import sqlite3
 import streamlit as st
 from openai import OpenAI
 import hashlib
+import re
+
+def is_english(text: str) -> bool:
+    return bool(re.search(r"[A-Za-z]", text or ""))
+
+def render_student_chat_feedback(result: dict, attempt_no: int):
+    # لا نرد إلا إذا الطالب كتب إنجليزي
+    student_text = result.get("student_text", "")
+    if not is_english(student_text):
+        st.info("Please write in English so I can help you.")
+        return
+
+    st.markdown("### 💬 Feedback")
+
+    grammar = result.get("grammar_hints", []) or []
+    spelling = result.get("spelling_hints", []) or []
+    punctuation = result.get("punctuation_hints", []) or []
+    vocab = result.get("vocab_hints", []) or []
+
+    def format_items(items, limit=3):
+        out = []
+        for h in items[:limit]:
+            issue = (h.get("issue") or "").strip()
+            hint = (h.get("hint") or "").strip()
+            options = h.get("options") or []
+            line = f"- **{issue}**: {hint}"
+            if options:
+                line += "\n  **Options:** " + " / ".join([str(x) for x in options[:4]])
+            out.append(line)
+        return "\n".join(out)
+
+    showed_any = False
+
+    if grammar:
+        st.markdown("**Grammar errors**")
+        st.markdown(format_items(grammar, 3))
+        showed_any = True
+
+    if spelling:
+        st.markdown("---")
+        st.markdown("**Spelling errors**")
+        st.markdown(format_items(spelling, 3))
+        showed_any = True
+
+    if punctuation:
+        st.markdown("---")
+        st.markdown("**Punctuation**")
+        st.markdown(format_items(punctuation, 3))
+        showed_any = True
+
+    if vocab:
+        st.markdown("---")
+        st.markdown("**Stronger word choices**")
+        st.markdown(format_items(vocab, 2))
+        showed_any = True
+
+    if not showed_any:
+        st.success("Nice work — no major issues detected. Try adding more detail for a stronger answer.")
+
+    # المحاولة 4: تلميح إضافي بسيط (بدون شرح طويل)
+    if attempt_no >= 4:
+        st.markdown("---")
+        st.markdown("**Extra hint (Attempt 4+)**")
+        st.markdown("- Rewrite one sentence using a clearer connector (because / however / therefore).")
+        st.markdown("- Check: subject–verb agreement + tense consistency.")
 st.set_page_config(page_title="Writing Performance Analyzer", layout="centered")
 st.title("AI Writing Performance Analyzer (Students)")
 # ----------- Local DB (SQLite) -----------
