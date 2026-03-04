@@ -15,17 +15,17 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
 
     # الطالب لم يكتب شيء
     if word_count == 0:
-    st.warning("Please write your answer in English.")
+        st.warning("Please write your answer in English.")
     return
 
     # النص قصير جدا
     if word_count < 5:
-    st.warning("Please write at least 5 words in English so I can check your writing.")
+        st.warning("Please write at least 5 words in English so I can check your writing.")
     return
 
     # التأكد من أن النص إنجليزي
     if not is_english(text):
-    st.info("Please write in English so I can help you.")
+        st.info("Please write in English so I can help you.")
     return
 
     st.markdown("### 💬 Feedback")
