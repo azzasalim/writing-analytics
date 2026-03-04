@@ -269,7 +269,7 @@ if student_lookup:
         scores = []
         for attempt_no, rj in rows:
             data = json.loads(rj)
-            total_score = sum(data["rubric_scores"].values())
+            total_score = sum(data.get("rubric_scores", {}).values())
             scores.append((attempt_no, total_score))
 
         first_score = scores[0][1]
