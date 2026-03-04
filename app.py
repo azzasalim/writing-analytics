@@ -8,7 +8,7 @@ import re
 def is_english(text: str) -> bool:
     return bool(re.search(r"[A-Za-z]", text or ""))
 
-def render_student_chat_feedback(result: dict, attempt_no: int):
+def render_student_chat_feedback(result: dict, student_text: str, attempt_no: int):
     # لا نرد إلا إذا الطالب كتب إنجليزي
     student_text = st.session_state.get("student_text", "")
     if not is_english(student_text):
