@@ -10,9 +10,23 @@ def is_english(text: str) -> bool:
 
 def render_student_chat_feedback(result: dict, student_text: str, attempt_no: int):
     # لا نرد إلا إذا الطالب كتب إنجليزي
-    if not is_english(student_text):
-        st.info("Please write in English so I can help you.")
-        return
+    text = (student_text or "").strip()
+    word_count = len(text.split())
+
+    # الطالب لم يكتب شيء
+    if word_count == 0:
+    st.warning("Please write your answer in English.")
+    return
+
+    # النص قصير جدا
+    if word_count < 5:
+    st.warning("Please write at least 5 words in English so I can check your writing.")
+    return
+
+    # التأكد من أن النص إنجليزي
+    if not is_english(text):
+    st.info("Please write in English so I can help you.")
+    return
 
     st.markdown("### 💬 Feedback")
 
