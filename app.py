@@ -27,10 +27,16 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
             issue = (h.get("issue") or "").strip()
             hint = (h.get("hint") or "").strip()
             options = h.get("options") or []
-            line = f"- **{issue}**: {hint}"
+            
+            st.markdown(f"💬 **{issue}**")
+            st.write(hint)
+
             if options:
-                line += "\n  **Options:** " + " / ".join([str(x) for x in options[:4]])
-            out.append(line)
+                st.radio(
+                    "Choose the correct option:",
+                    options,
+                    key=f"opt_{issue}"
+                )
         return "\n".join(out)
 
     showed_any = False
