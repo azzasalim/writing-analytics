@@ -76,13 +76,13 @@ def title_underline(text):
         title_underline("Capitalization errors")
         format_items(capitalization)
 
-# Vocabulary (اختياري)
-if vocab:
-    showed_any = True
-    st.markdown("**Word choice (stronger options)**")
-    format_items(vocab)
+    # Vocabulary (اختياري)
+    if vocab:
+        showed_any = True
+        st.markdown("**Word choice (stronger options)**")
+        format_items(vocab)
 
-if not showed_any:
+    if not showed_any:
     st.info("No feedback items found for this attempt.")
 
     
