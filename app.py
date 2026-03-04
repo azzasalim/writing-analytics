@@ -62,7 +62,7 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
                 st.markdown("💡 Tip: Pay attention to verb tense and spelling.")
 
             else:
-            st.warning("I couldn't generate corrections. Try writing a longer English sentence.")
+                st.warning("I couldn't generate corrections. Try writing a longer English sentence.")
 
         return
 
