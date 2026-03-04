@@ -268,7 +268,7 @@ Return ONLY JSON.
     conn.commit()
 
     st.success("تم التحليل والحفظ ✅")
-    render_interactive_feedback(result, attempt_no)
+    render_student_chat_feedback(result, attempt_no)
     st.divider()
 if st.session_state.role == "admin":
     st.subheader("Research view (latest saved attempts)")
