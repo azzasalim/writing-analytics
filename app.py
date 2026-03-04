@@ -10,7 +10,6 @@ def is_english(text: str) -> bool:
 
 def render_student_chat_feedback(result: dict, student_text: str, attempt_no: int):
     # لا نرد إلا إذا الطالب كتب إنجليزي
-    student_text = st.session_state.get("student_text", "")
     if not is_english(student_text):
         st.info("Please write in English so I can help you.")
         return
