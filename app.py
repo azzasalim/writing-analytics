@@ -64,7 +64,7 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
                 else:
                     st.markdown("Try writing a clearer sentence so I can give better feedback.")
 
-           return
+            return
         corrected = (result.get("corrected_text") or "").strip()
         with st.chat_message("assistant"):
 
