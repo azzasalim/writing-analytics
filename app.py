@@ -475,7 +475,13 @@ if gains:
 
             for attempt_no, rj in rows:
                 data = json.loads(rj)
-                scores.append(sum(data["rubric_scores"].values()))
+              
+                rubric = data.get("rubric_scores", {})
+                if isinstance(rubric, dict) and rubric:
+                    scores.append(sum(rubric.values()))
+                else:
+                    # إذا كانت محاولة قديمة بدون rubric_scores نتجاهلها
+                    continue          data = json.loads(rj)
 
             first_score = scores[0]
             last_score = scores[-1]
