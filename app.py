@@ -42,30 +42,50 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
                     )
                     st.form_submit_button("Submit choice")
         return
-    showed_any = False
+    # --- Titles with required styling ---
+def title_bold(text):
+    st.markdown(f"**{text}**")
 
-    if grammar:
-        st.markdown("**Grammar errors**")
-        st.markdown(format_items(grammar, 3))
-        showed_any = True
+def title_underline(text):
+    st.markdown(f"<u>{text}</u>", unsafe_allow_html=True)
 
-    if spelling:
-        st.markdown("---")
-        st.markdown("**Spelling errors**")
-        st.markdown(format_items(spelling, 3))
-        showed_any = True
+showed_any = False
 
-    if punctuation:
-        st.markdown("---")
-        st.markdown("**Punctuation**")
-        st.markdown(format_items(punctuation, 3))
-        showed_any = True
+# Grammar (BOLD title)
+if grammar:
+    showed_any = True
+    title_bold("Grammar errors")
+    format_items(grammar)
 
-    if vocab:
-        st.markdown("---")
-        st.markdown("**Stronger word choices**")
-        st.markdown(format_items(vocab, 2))
-        showed_any = True
+# Spelling (UNDERLINE title)
+if spelling:
+    showed_any = True
+    title_underline("Spelling errors")
+    format_items(spelling)
+
+# Punctuation (UNDERLINE title)
+if punctuation:
+    showed_any = True
+    title_underline("Punctuation errors")
+    format_items(punctuation)
+
+# Capitalization (UNDERLINE title) - only if exists in result
+capitalization = result.get("capitalization_hints", []) or []
+if capitalization:
+    showed_any = True
+    title_underline("Capitalization errors")
+    format_items(capitalization)
+
+# Vocabulary (اختياري)
+if vocab:
+    showed_any = True
+    st.markdown("**Word choice (stronger options)**")
+    format_items(vocab)
+
+if not showed_any:
+    st.info("No feedback items found for this attempt.")
+
+    
 
     if not showed_any:
         st.success("Nice work — no major issues detected. Try adding more detail for a stronger answer.")
