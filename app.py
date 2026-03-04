@@ -51,27 +51,27 @@ def title_underline(text):
 
     showed_any = False
 
-# Grammar (BOLD title)
-if grammar:
+    # Grammar (BOLD title)
+    if grammar:
     showed_any = True
     st.markdown("**Grammar errors**")
     format_items(grammar)
 
-# Spelling (UNDERLINE title)
-if spelling:
+    # Spelling (UNDERLINE title)
+    if spelling:
     showed_any = True
     title_underline("Spelling errors")
     format_items(spelling)
 
-# Punctuation (UNDERLINE title)
-if punctuation:
+    # Punctuation (UNDERLINE title)
+    if punctuation:
     showed_any = True
     title_underline("Punctuation errors")
     format_items(punctuation)
 
-# Capitalization (UNDERLINE title) - only if exists in result
-capitalization = result.get("capitalization_hints", []) or []
-if capitalization:
+    # Capitalization (UNDERLINE title) - only if exists in result
+    capitalization = result.get("capitalization_hints", []) or []
+    if capitalization:
     showed_any = True
     title_underline("Capitalization errors")
     format_items(capitalization)
