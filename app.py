@@ -49,7 +49,7 @@ def title_bold(text):
 def title_underline(text):
     st.markdown(f"<u>{text}</u>", unsafe_allow_html=True)
 
-showed_any = False
+    showed_any = False
 
 # Grammar (BOLD title)
 if grammar:
