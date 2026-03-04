@@ -429,15 +429,18 @@ for (sid,) in students:
         scores = []
         for attempt_no, rj in rows:
             data = json.loads(rj)
-rubric = data.get("rubric_scores", {})
-if isinstance(rubric, dict) and rubric:
-    scores.append(sum(rubric.values()))
-        first_score = scores[0]
-        last_score = scores[-1]
-        max_score = 20
-
-        if max_score - first_score != 0:
-            g = (last_score - first_score) / (max_score - first_score)
+          
+            rubric = data.get("rubric_scores", {})
+            if isinstance(rubric, dict) and rubric:
+                scores.append(sum(rubric.values()))
+              
+              if len(scores) >= 2:
+                  first_score = scores[0]
+                  last_score = scores[-1]
+                
+                  max_score = 20
+                  if max_score - first_score != 0:
+                      g = (last_score - first_score) / (max_score - first_score)
             gains.append(g)
 if gains:
     gains_array = np.array(gains)
