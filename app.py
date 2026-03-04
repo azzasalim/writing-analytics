@@ -22,8 +22,8 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
     vocab = result.get("vocab_hints", []) or []
 
     def format_items(items, limit=3):
-        out = []
-        for h in items[:limit]:
+
+        for i, h in enumerate(items[:limit]):
             issue = (h.get("issue") or "").strip()
             hint = (h.get("hint") or "").strip()
             options = h.get("options") or []
@@ -35,10 +35,9 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
                 st.radio(
                     "Choose the correct option:",
                     options,
-                    key=f"opt_{issue}"
+                    key=f"opt_{i}"
                 )
-        return "\n".join(out)
-
+return
     showed_any = False
 
     if grammar:
