@@ -29,7 +29,45 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
     return
 
     st.markdown("### 💬 Feedback")
+    with st.chat_message("assistant"):
+        st.markdown("👏 Nice try! Let’s improve it together خطوة خطوة.")
 
+    corrected = (result.get("corrected_text") or "").strip()
+    if corrected:
+     with st.chat_message("assistant"):
+        st.markdown("✅ **Suggested corrected sentence:**")
+        st.markdown(f"> {corrected}")
+
+    issues = []
+    for cat, title in [
+    ("grammar_hints", "Grammar"),
+    ("spelling_hints", "Spelling"),
+    ("punctuation_hints", "Punctuation"),
+    ("capitalization_hints", "Capitalization"),
+    ("vocab_hints", "Word choice"),
+]:
+    for h in (result.get(cat) or []):
+        issues.append((title, h))
+
+if not issues:
+    with st.chat_message("assistant"):
+        st.success("🌟 Great! I didn’t find major issues. Try writing 1–2 longer sentences for deeper feedback.")
+    return
+
+for i, (title, h) in enumerate(issues, start=1):
+    issue = (h.get("issue") or "Issue").strip()
+    hint = (h.get("hint") or "").strip()
+    suggestion = (h.get("suggestion") or "").strip()
+    error_text = (h.get("error_text") or "").strip()
+
+    with st.chat_message("assistant"):
+        st.markdown(f"**{i}) {title}: {issue}**")
+        if error_text:
+            st.markdown(f"🔎 **Where:** `{error_text}`")
+        if hint:
+            st.markdown(f"💡 {hint}")
+        if suggestion:
+            st.markdown(f"✅ **Try:** {suggestion}")
     grammar = result.get("grammar_hints", []) or []
     spelling = result.get("spelling_hints", []) or []
     punctuation = result.get("punctuation_hints", []) or []
