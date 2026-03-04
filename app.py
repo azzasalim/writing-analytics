@@ -373,7 +373,10 @@ if st.session_state.role == "admin":
     if rows:
         for created_at, sid, att, rj in rows:
             st.caption(f"{created_at} | {sid} | Attempt {att}")
+        try:
             st.json(json.loads(rj))
+        except:
+            st.write(rj)
     else:
         st.info("لا توجد بيانات محفوظة بعد.")
 st.divider()
