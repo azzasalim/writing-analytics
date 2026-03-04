@@ -49,8 +49,22 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
         for h in (result.get(cat) or []):
             issues.append((title, h))
 
-    if not issues:
-        
+        if not issues:
+
+            corrected = (result.get("corrected_text") or "").strip()
+
+            with st.chat_message("assistant"):
+
+                st.markdown("✏️ **Let's improve your sentence**")
+
+                st.markdown(f"❌ Your sentence: **{student_text}**")
+
+                if corrected:
+                    st.markdown(f"✅ Correct sentence: **{corrected}**")
+                else:
+                    st.markdown("Try writing a clearer sentence so I can give better feedback.")
+
+             return
         corrected = (result.get("corrected_text") or "").strip()
         with st.chat_message("assistant"):
 
