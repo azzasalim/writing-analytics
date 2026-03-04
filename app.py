@@ -203,7 +203,6 @@ Return ONLY JSON.
     conn.commit()
 
     st.success("تم التحليل والحفظ ✅")
-    st.json(result)
 
 st.divider()
 if st.session_state.role == "admin":
