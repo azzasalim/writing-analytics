@@ -315,8 +315,8 @@ if st.session_state.role == "admin":
             if isinstance(rubric, dict) and rubric:
                 scores.append(sum(rubric.values()))
             if isinstance(rubric, dict) and rubric:
-            total_scores.append(sum(rubric.values()))
-            total_error_density.append(data["error_density"])
+                total_scores.append(sum(rubric.values()))
+                total_error_density.append(data["error_density"])
 
         avg_score = round(sum(total_scores) / len(total_scores), 2)
         avg_error_density = round(sum(total_error_density) / len(total_error_density), 3)
