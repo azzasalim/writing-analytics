@@ -20,7 +20,7 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
 
     # النص قصير جدا
     if word_count < 5:
-        st.warning("Please write at least 5 words in English so I can check your writing.")
+        st.warning("Try writing a longer sentence next time — but I will still check this one.")
     return
 
     # التأكد من أن النص إنجليزي
