@@ -49,10 +49,10 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
         for h in (result.get(cat) or []):
             issues.append((title, h))
 
-   if not issues:
-    with st.chat_message("assistant"):
-        st.success("🌟 Great! I didn’t find major issues. Try writing 1–2 longer sentences for deeper feedback.")
-    return
+        if not issues:
+            with st.chat_message("assistant"):
+                st.success("🌟 Great! I didn’t find major issues. Try writing 1–2 longer sentences for deeper feedback.")
+            return
 
     for i, (title, h) in enumerate(issues, start=1):
         issue = (h.get("issue") or "Issue").strip()
