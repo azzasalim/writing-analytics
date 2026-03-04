@@ -54,7 +54,7 @@ showed_any = False
 # Grammar (BOLD title)
 if grammar:
     showed_any = True
-    title_bold("Grammar errors")
+    st.markdown("**Grammar errors**")
     format_items(grammar)
 
 # Spelling (UNDERLINE title)
