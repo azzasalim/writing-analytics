@@ -32,11 +32,15 @@ def render_student_chat_feedback(result: dict, student_text: str, attempt_no: in
             st.write(hint)
 
             if options:
-                st.radio(
-                    "Choose the correct option:",
-                    options,
-                    key=f"opt_{i}"
-                )
+                # ✅ Put options inside a form so selecting doesn't rerun the whole app
+                form_key = f"fb_form_{attempt_no}_{issue}"
+                with st.form(form_key):
+                    st.radio(
+                        "Choose the correct option:",
+                        options,
+                        key=f"opt_{attempt_no}_{issue}",
+                    )
+                    st.form_submit_button("Submit choice")
         return
     showed_any = False
 
